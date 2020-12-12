@@ -40,10 +40,15 @@ X1mX2 = X1 - X2, X3mX4 = X3 - X4, Y1mY2 = Y1 - Y2, Y3mY4 = Y3 - Y4,
 
 det(Denom, X1mX2, Y1mY2, X3mX4, Y3mY4),
 %-----------------------------—
-X1mX2 = X1 - X2, X2mX3 = X2 - X3, Y1mY2 = Y1 - Y2, Y3mY3 = Y2 - Y3,
+X1mX2 = X1 - X2, X2mX3 = X2 - X3, Y1mY2 = Y1 - Y2, Y2mY3 = Y2 - Y3,
 det(Denom2, X1mX2, Y1mY2, X2mX3, Y2mY3),
 %-----------------------------—
 isZero(Denom, Denom2),
+
+Denom <> 0,
+Denom2 <> 0,
+getEl(8, Nums, X1), getEl(10, Nums, X2), getEl(9, Nums, Y1), getEl(11, Nums, Y2),
+getEl(0, Nums, X3), getEl(2, Nums, X4), getEl(1, Nums, Y3), getEl(3, Nums, Y4),
 
 det(DetL1, X1, Y1, X2, Y2),
 det(DetL2, X3, Y3, X4, Y4),
@@ -51,11 +56,13 @@ det(DetL2, X3, Y3, X4, Y4),
 det(Xnom, DetL1, X1mX2, DetL2, X3mX4),
 det(Ynom, DetL1, Y1mY2, DetL2, Y3mY4),
 
+
 IxOut = Xnom / Denom,
 IyOut = Ynom / Denom,
 
 checkIntersection(X3, Y3, X4, Y4, IxOut, IyOut).
 
+/*
 %------------------------------—
 
 findIntersectionPoints(Nums, 2):-
@@ -122,7 +129,7 @@ IxOut = Xnom / Denom,
 IyOut = Ynom / Denom,
 
 checkIntersection(X3, Y3, X4, Y4, IxOut, IyOut).
-
+*/
 %------------------------------—
 
 det(Denom, A, B, C, D):-
