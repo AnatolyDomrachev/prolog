@@ -21,9 +21,8 @@ clauses
         readreal(X4),
         readreal(Y4),
         test_trap(X1,Y1,X2,Y2,X3,Y3,X4,Y4,R1),
-        test_trap(X1,Y1,X2,Y2,X3,Y3,X4,Y4,R2),
         state_trap1(R1),
-        state_trap2(X1,Y1,X2,Y2,X3,Y3,X4,Y4,R2).
+        state_trap2(X1,Y1,X2,Y2,X3,Y3,X4,Y4,R1).
 
     get_line(X1,Y1,X2,Y2,X3,Y3,X4,Y4,R):-
         write("Enter line, 2 point x and y "),
@@ -61,11 +60,11 @@ clauses
             R = 0.        
         
     state_trap1(R):-
-        R = 0,
+        R - 1 = -1,
         write("Ne trapecia"),nl.
 
     state_trap2(X1,Y1,X2,Y2,X3,Y3,X4,Y4,R):-
-        R <> 0,
+        R -1 = 0,
         get_line(X1,Y1,X2,Y2,X3,Y3,X4,Y4,R).
 
 goal

@@ -9,13 +9,41 @@ readNumsList(num_list, integer)
 getEl(integer, num_list, real)
 main(num_list)
 main(num_list, integer)
+test_trap(num_list)
 findIntersectionPoints(num_list, excludePointIndex)
 det(real, real, real, real, real)
 checkIntersection(real, real, real, real, real, real)
 isZero(real, real)
+isZero2(integer, real, real)
+test1(integer, num_list)
 
 
 CLAUSES
+%%%%%%
+test1(1,Nums):- main(Nums).
+test1(0,Nums):- write("Ne trapecia"),nl.
+
+test_trap(Nums):-
+    
+    getEl(0, Nums, X1), getEl(1, Nums, Y1),
+    getEl(2, Nums, X2), getEl(3, Nums, Y2),
+    getEl(4, Nums, X3), getEl(5, Nums, Y3),
+    getEl(6, Nums, X4), getEl(7, Nums, Y4),
+
+    X1mX2 = X1 - X2, X3mX4 = X3 - X4, Y1mY2 = Y1 - Y2, Y3mY4 = Y3 - Y4,
+    X3mX2 = X3 - X2, X1mX4 = X1 - X4, Y3mY2 = Y3 - Y2, Y1mY4 = Y1 - Y4,
+    
+    det(Denom1, X1mX2, Y1mY2, X3mX4, Y3mY4),
+    det(Denom2, X3mX2, Y3mY2, X1mX4, Y1mY4),
+
+    isZero2(R, Denom1, Denom2),
+    test1(R, Nums).
+
+isZero2(R, 0, X):- X <> 0, R = 1.
+isZero2(R, X, 0):- X <> 0, R = 1.
+isZero2(R, X, Y):- X <> 0, Y <> 0, R = 0.
+isZero2(R, 0, 0):- R = 0.
+%%%%%%
 readNumsList([], 0):-!.
 readNumsList([Head|Tail], ElemsAmount):-ElemsAmount > 0,
 readreal(Head), !,
@@ -30,6 +58,10 @@ NextIndex = Index - 1,
 getEl(NextIndex, Tail, Elem).
 
 %-----------------------------—
+
+
+
+%------------------------------
 
 findIntersectionPoints(Nums, 1):-
 nl, write("Storona 1: "), nl,
@@ -157,4 +189,4 @@ GOAL
 Length=12,
 write("Vvedite koord trapecii and koord pramoi: "), nl, nl,
 readNumsList(List,Length),
-main(List).
+test_trap(List).
