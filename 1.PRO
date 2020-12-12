@@ -12,7 +12,7 @@ main(num_list, integer)
 findIntersectionPoints(num_list, excludePointIndex)
 det(real, real, real, real, real)
 checkIntersection(real, real, real, real, real, real)
-isZero(real)
+isZero(real, real)
 
 
 CLAUSES
@@ -39,7 +39,11 @@ getEl(0, Nums, X3), getEl(2, Nums, X4), getEl(1, Nums, Y3), getEl(3, Nums, Y4),
 X1mX2 = X1 - X2, X3mX4 = X3 - X4, Y1mY2 = Y1 - Y2, Y3mY4 = Y3 - Y4,
 
 det(Denom, X1mX2, Y1mY2, X3mX4, Y3mY4),
-isZero(Denom),
+%-----------------------------—
+X1mX2 = X1 - X2, X2mX3 = X2 - X3, Y1mY2 = Y1 - Y2, Y3mY3 = Y2 - Y3,
+det(Denom2, X1mX2, Y1mY2, X2mX3, Y2mY3),
+%-----------------------------—
+isZero(Denom, Denom2),
 
 det(DetL1, X1, Y1, X2, Y2),
 det(DetL2, X3, Y3, X4, Y4),
@@ -129,8 +133,8 @@ Xint >= X1, Xint <= X2, write("X = ", Xint), nl, write("Y = ", Yint), nl ;
 Xint <= X1, Xint >= X2, write("X = ", Xint), nl, write("Y = ", Yint), nl ;
 write("Net peresechenia"), nl, !.
 
-isZero(0):-write("Match"), nl, !, fail.
-isZero(_):-!.
+isZero(0,0):-write("Match"), nl, !, fail.
+isZero(_,_):-!.
 
 
 main(List):-
