@@ -9,7 +9,7 @@ predicates
     get_line(real,real,real,real,real,real,real,real)
     test2(integer, integer, real,real,real,real,real,real,real,real)
     get_point(real,real,real,real,real,real,real,real)
- 
+    get_point2(real,real,real,real,real,real,real,real,real,real)
 
 clauses
     input:-
@@ -52,24 +52,39 @@ clauses
 
     test_line(X1,Y1,X2,Y2,X01,Y01,X02,Y02):-
         nl,
-        write(X1," ",Y1," ",X2," ",Y2," "),nl,
-        write(X01," ",Y01," ",X02," ",Y02),nl,nl,
+        %write(X1," ",Y1," ",X2," ",Y2," "),nl,
+        %write(X01," ",Y01," ",X02," ",Y02),nl,nl,
 
         test_paral(X1,Y1,X2,Y2,X01,Y01,X02,Y02,R1),
         test_paral(X1,Y1,X01,Y01,X01,Y01,X02,Y02,R2),
-        write("R1 R2 ", R1, R2),nl,nl,
+        %write("R1 R2 ", R1, R2),nl,nl,
         test2(R1, R2, X1,Y1,X2,Y2,X01,Y01,X02,Y02).
 
-    get_point(X1,Y1,X2,Y2,X01,Y01,X02,Y02):-
+    get_point(X1,Y1,X2,Y2,X3,Y3,X4,Y4):-
         nl,
-        write(X1,Y1,X2,Y2,X01,Y01,X02,Y02, "Get point").
+        %write(X1," ",Y1," ",X2," ",Y2," , ",X3," ",Y3," ",X4," ",Y4," CROSS LINE: "),
+        Ua = ((X4-X3)*(Y1-Y3)-(Y4-Y3)*(X1-X3))/((Y4-Y3)*(X2-X1)-(X4-X3)*(Y2-Y1)),
+        %%%%%%Ub = ((X2-X1)*(Y1-Y3)-(Y2-Y1)*(X1-X3))/((Y4-Y3)*(X2-X1)-(X4-X3)*(Y2-Y1)),
+        Xc = X1+Ua*(X2-X1),
+        Yc = Y1+Ua*(Y2-Y1),
+        get_point2(X1,Y1,X2,Y2,X3,Y3,X4,Y4,Xc,Yc).
 
-        
+    get_point2(X1,Y1,X2,Y2,X3,Y3,X4,Y4,Xc,Yc):-
+        Xc >= X1 , Xc <= X2, 
+        write(X1," ",Y1," ",X2," ",Y2," , ",X3," ",Y3," ",X4," ",Y4," ", " CROSS: ", Xc, " ", Yc),nl;
+        Xc < X1 ,
+        write(X1," ",Y1," ",X2," ",Y2," , ",X3," ",Y3," ",X4," ",Y4," ", " No cross"),nl;
+        Xc > X2 ,
+        write(X1," ",Y1," ",X2," ",Y2," , ",X3," ",Y3," ",X4," ",Y4," ", " No cross"),nl.
 
-    test2(1, 1, X1,Y1,X2,Y2,X01,Y01,X02,Y02):- write(X1,Y1,X2,Y2,X01,Y01,X02,Y02, " Lay on side").
-    test2(1, 0, X1,Y1,X2,Y2,X01,Y01,X02,Y02):- write(X1,Y1,X2,Y2,X01,Y01,X02,Y02, " No cross").
-    test2(0, 1, X1,Y1,X2,Y2,X01,Y01,X02,Y02):- get_point(X1,Y1,X2,Y2,X01,Y01,X02,Y02).
-    test2(0, 0, X1,Y1,X2,Y2,X01,Y01,X02,Y02):- get_point(X1,Y1,X2,Y2,X01,Y01,X02,Y02).
+    test2(1, 1, X1,Y1,X2,Y2,X01,Y01,X02,Y02):-
+		 write(X1," ",Y1," ",X2," ",Y2," , ",X01," ",Y01," ",X02," ",Y02," ", " Lay on side"),nl.
+    test2(1, 0, X1,Y1,X2,Y2,X01,Y01,X02,Y02):-
+		 write(X1," ",Y1," ",X2," ",Y2," , ",X01," ",Y01," ",X02," ",Y02," ", " No cross"),nl.
+    test2(0, 1, X1,Y1,X2,Y2,X01,Y01,X02,Y02):-
+		 get_point(X1,Y1,X2,Y2,X01,Y01,X02,Y02).
+    test2(0, 0, X1,Y1,X2,Y2,X01,Y01,X02,Y02):-
+		 get_point(X1,Y1,X2,Y2,X01,Y01,X02,Y02).
 
 
     test_paral(X1,Y1,X2,Y2,X3,Y3,X4,Y4,R):-
