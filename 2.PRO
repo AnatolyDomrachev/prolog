@@ -5,6 +5,7 @@ predicates
     test_cross_trap(real,real,real,real,real,real,real,real,real,real,real,real)
     test_line(real,real,real,real,real,real,real,real)
     test_paral(real,real,real,real,real,real,real,real,real)
+    test3(real,real)
     state_trap(real,real,real,real,real,real,real,real,real)
     get_line(real,real,real,real,real,real,real,real)
     test2(integer, integer, real,real,real,real,real,real,real,real)
@@ -88,27 +89,18 @@ clauses
 
 
     test_paral(X1,Y1,X2,Y2,X3,Y3,X4,Y4,R):-
-        Y1 - Y2 = 0 ,
-        Y3 - Y4 = 0 ,
-        R = 1;
+        A1 = X1-X2,
+        A2 = Y1-Y2,
+        B1 = X3-X4,
+        B2 = Y3-Y4,
+        Cs = (A1 * B1 + A2 * B2)/ sqrt(A1*A1 + A2 * A2) / sqrt(B1*B1 + B2 * B2),
+        Ac = abs(Cs),
+        test3(Ac,R).
 
-        Y1 - Y2 <> 0 ,
-        Y3 - Y4 = 0 ,
-        R = 0;
+    test3(Ac,R):-
+        Ac >= 1, R = 1;
+        Ac < 1, R = 0.
 
-        Y1 - Y2 = 0 ,
-        Y3 - Y4 <> 0 ,
-        R = 0;
-
-        Y1 - Y2 <> 0 ,
-        Y3 - Y4 <> 0 ,
-        (X1 - X2) / (Y1 - Y2) = (X3 - X4) / (Y3 - Y4), 
-            R = 1;
-
-        Y1 - Y2 <> 0 ,
-        Y3 - Y4 <> 0 ,
-        (X1 - X2) / (Y1 - Y2) <> (X3 - X4) / (Y3 - Y4), 
-            R = 0.        
 
     state_trap(0,X1,Y1,X2,Y2,X3,Y3,X4,Y4):-
         write(X1,Y1,X2,Y2,X3,Y3,X4,Y4), nl ,
