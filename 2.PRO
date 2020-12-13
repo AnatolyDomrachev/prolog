@@ -2,16 +2,18 @@ predicates
     input
     test_trap(real,real,real,real,real,real,real,real,real)
     test_trap2(real,real,real)
-    test_cross(real,real,real,real,real,real,real,real,real,real,real,real,real)
+    test_cross_trap(real,real,real,real,real,real,real,real,real,real,real,real)
+    test_line(real,real,real,real,real,real,real,real)
     test_paral(real,real,real,real,real,real,real,real,real)
-    state_trap1(real)
-    state_trap2(real,real,real,real,real,real,real,real,real)
-    get_line(real,real,real,real,real,real,real,real,real)
+    state_trap(real,real,real,real,real,real,real,real,real)
+    get_line(real,real,real,real,real,real,real,real)
+    test2(integer, integer, real,real,real,real,real,real,real,real)
+    get_point(real,real,real,real,real,real,real,real)
  
 
 clauses
     input:-
-        write("Enter trapecia, 4 point x and y "),
+        write("Enter trapecia, 4 point x and y "),nl,
         readreal(X1),
         readreal(Y1),
         readreal(X2),
@@ -20,17 +22,16 @@ clauses
         readreal(Y3),
         readreal(X4),
         readreal(Y4),
-        test_trap(X1,Y1,X2,Y2,X3,Y3,X4,Y4,R1),
-        state_trap1(R1),
-        state_trap2(X1,Y1,X2,Y2,X3,Y3,X4,Y4,R1).
+        test_trap(X1,Y1,X2,Y2,X3,Y3,X4,Y4,R),
+        state_trap(R,X1,Y1,X2,Y2,X3,Y3,X4,Y4).
 
-    get_line(X1,Y1,X2,Y2,X3,Y3,X4,Y4,R):-
-        write("Enter line, 2 point x and y "),
+    get_line(X1,Y1,X2,Y2,X3,Y3,X4,Y4):-
+        write("Enter line, 2 point x and y "),nl,
         readreal(X01),
         readreal(Y01),
         readreal(X02),
         readreal(Y02),
-        test_cross(X1,Y1,X2,Y2,X3,Y3,X4,Y4,X01,Y01,X02,Y02,R).
+        test_cross_trap(X1,Y1,X2,Y2,X3,Y3,X4,Y4,X01,Y01,X02,Y02).
     
     test_trap(X1,Y1,X2,Y2,X3,Y3,X4,Y4,R):-
         test_paral(X1,Y1,X2,Y2,X3,Y3,X4,Y4,R1),
@@ -43,29 +44,63 @@ clauses
         R1 <> R2,
         R = 1.
 
-    test_cross(X1,Y1,X2,Y2,X3,Y3,X4,Y4,X01,Y01,X02,Y02,R):-
-        write(X1,Y1,X2,Y2,X3,Y3,X4,Y4,X01,Y01,X02,Y02,R).
+    test_cross_trap(X1,Y1,X2,Y2,X3,Y3,X4,Y4,X01,Y01,X02,Y02):-
+        test_line(X1,Y1,X2,Y2,X01,Y01,X02,Y02),
+        test_line(X2,Y2,X3,Y3,X01,Y01,X02,Y02),
+        test_line(X3,Y3,X4,Y4,X01,Y01,X02,Y02),
+        test_line(X4,Y4,X1,Y1,X01,Y01,X02,Y02).
+
+    test_line(X1,Y1,X2,Y2,X01,Y01,X02,Y02):-
+        nl,
+        write(X1," ",Y1," ",X2," ",Y2," "),nl,
+        write(X01," ",Y01," ",X02," ",Y02),nl,nl,
+
+        test_paral(X1,Y1,X2,Y2,X01,Y01,X02,Y02,R1),
+        test_paral(X1,Y1,X01,Y01,X01,Y01,X02,Y02,R2),
+        write("R1 R2 ", R1, R2),nl,nl,
+        test2(R1, R2, X1,Y1,X2,Y2,X01,Y01,X02,Y02).
+
+    get_point(X1,Y1,X2,Y2,X01,Y01,X02,Y02):-
+        nl,
+        write(X1,Y1,X2,Y2,X01,Y01,X02,Y02, "Get point").
+
+        
+
+    test2(1, 1, X1,Y1,X2,Y2,X01,Y01,X02,Y02):- write(X1,Y1,X2,Y2,X01,Y01,X02,Y02, " Lay on side").
+    test2(1, 0, X1,Y1,X2,Y2,X01,Y01,X02,Y02):- write(X1,Y1,X2,Y2,X01,Y01,X02,Y02, " No cross").
+    test2(0, 1, X1,Y1,X2,Y2,X01,Y01,X02,Y02):- get_point(X1,Y1,X2,Y2,X01,Y01,X02,Y02).
+    test2(0, 0, X1,Y1,X2,Y2,X01,Y01,X02,Y02):- get_point(X1,Y1,X2,Y2,X01,Y01,X02,Y02).
+
 
     test_paral(X1,Y1,X2,Y2,X3,Y3,X4,Y4,R):-
         Y1 - Y2 = 0 ,
         Y3 - Y4 = 0 ,
         R = 1;
+
+        Y1 - Y2 <> 0 ,
+        Y3 - Y4 = 0 ,
+        R = 0;
+
+        Y1 - Y2 = 0 ,
+        Y3 - Y4 <> 0 ,
+        R = 0;
+
         Y1 - Y2 <> 0 ,
         Y3 - Y4 <> 0 ,
         (X1 - X2) / (Y1 - Y2) = (X3 - X4) / (Y3 - Y4), 
             R = 1;
+
         Y1 - Y2 <> 0 ,
         Y3 - Y4 <> 0 ,
         (X1 - X2) / (Y1 - Y2) <> (X3 - X4) / (Y3 - Y4), 
             R = 0.        
-        
-    state_trap1(R):-
-        R - 1 = -1,
+
+    state_trap(0,X1,Y1,X2,Y2,X3,Y3,X4,Y4):-
+        write(X1,Y1,X2,Y2,X3,Y3,X4,Y4), nl ,
         write("Ne trapecia"),nl.
 
-    state_trap2(X1,Y1,X2,Y2,X3,Y3,X4,Y4,R):-
-        R -1 = 0,
-        get_line(X1,Y1,X2,Y2,X3,Y3,X4,Y4,R).
+    state_trap(1,X1,Y1,X2,Y2,X3,Y3,X4,Y4):-
+        get_line(X1,Y1,X2,Y2,X3,Y3,X4,Y4).
 
 goal
     input.
